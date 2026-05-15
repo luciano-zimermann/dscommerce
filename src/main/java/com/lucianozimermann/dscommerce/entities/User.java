@@ -1,13 +1,16 @@
 package com.lucianozimermann.dscommerce.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.*;
 
+@SuppressWarnings( "serial" )
 @Entity
 @Table( name = "tb_user" )
-public class User
+public class User implements UserDetails
 {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -143,5 +146,41 @@ public class User
     public int hashCode()
     {
         return Objects.hashCode( id );
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+        return roles;
+    }
+
+    @Override
+    public String getUsername()
+    {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired()
+    {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked()
+    {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired()
+    {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return UserDetails.super.isEnabled();
     }
 }
